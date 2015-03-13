@@ -5,5 +5,28 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <bean id="fruitAbstract" abstract="true" class="com.bar.FruitTemplate">
+        <property name="size" value="1"/>
+        <property name="shape" ref="noneShape"/>
+        <property name="weight" value="1kg"/>
+    </bean>
 
+    <bean id="noneShape" class="com.bar.Shape">
+        <property name="name" value="none"/>
+    </bean>
+
+    <bean id="apple" class="com.bar.Apple" parent="fruitAbstract">
+        <property name="shape">
+            <bean class="com.bar.Shape">
+                <property name="name" value="roundness"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="orange" class="com.bar.Orange" parent="fruitAbstract">
+        <property name="color" value="orange"/>
+        <property name="shape">
+            <bean class="com.bar.Shape" p:name="roundness"/>
+        </property>
+    </bean>
 </beans>

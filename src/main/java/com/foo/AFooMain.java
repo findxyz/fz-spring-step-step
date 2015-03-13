@@ -3,6 +3,7 @@ package com.foo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
@@ -16,7 +17,8 @@ public class AFooMain {
 
     public static void main(String[] args) throws IOException {
         logger.info("Spring ApplicationContext is Loading");
-        ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml"});
+        AbstractApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml"});
+        context.registerShutdownHook();
 
         ExampleDestroyBean destroyBean = context.getBean("exampleDestroyBean", ExampleDestroyBean.class);
 
