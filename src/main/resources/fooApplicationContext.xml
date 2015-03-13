@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="helloWorld" class="com.foo.HelloWorld">
+        <property name="greeter" ref="greeter"/>
+    </bean>
+
+    <bean id="greeter" class="com.foo.Greeter" p:helloWorld="abc">
+
+        <property name="accounts">
+            <map>
+                <entry key="one" value="9.99"/>
+                <entry key="two" value="8.46"/>
+                <entry key="six" value="3.11"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="parent" abstract="true" class="com.foo.ParentObj">
+        <property name="adminEmails">
+            <props>
+                <prop key="administrator">administrator@example.com</prop>
+                <prop key="support">support@example.com</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="child" parent="parent" class="com.foo.ChildObj">
+        <property name="adminEmails">
+            <props merge="true">
+                <prop key="guest">guest@example.com</prop>
+                <prop key="support">support@support.com</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="jacksonMapper" class="com.foo.JacksonMapper" factory-method="getJacksonMapper"/>
+
+    <bean id="fz-classic" class="com.foo.People">
+        <property name="name" value="fz"/>
+        <property name="spouse" ref="lf"/>
+    </bean>
+
+    <bean id="fz-modern"
+          class="com.foo.People"
+          p:name="fz"
+          p:spouse-ref="lf"
+          scope="prototype"
+            />
+
+    <bean id="lf" class="com.foo.People">
+        <property name="name" value="lf"/>
+    </bean>
+
+    <bean id="exampleInitBean" class="com.foo.ExampleInitBean" init-method="init" destroy-method="cleanup"/>
+
+</beans>

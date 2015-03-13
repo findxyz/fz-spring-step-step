@@ -1,0 +1,46 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+
+sourceCompatibility = 1.7
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.spring.io/release" }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile(
+            "org.springframework:spring-context:4.1.5.RELEASE",
+            "log4j:log4j:1.2.14",
+            "joda-time:joda-time:2.2",
+            'com.fasterxml.jackson.core:jackson-core:2.5.1',
+            'com.fasterxml.jackson.core:jackson-databind:2.5.1',
+            'com.fasterxml.jackson.core:jackson-annotations:2.5.1'
+    )
+}
+
+jar {
+    baseName = 'helloworld'
+    version = '1.0.0'
+}
+
+task copyJars(type: Copy){
+    from configurations.runtime
+    into 'lib'
+}
+
+task createJavaProject << {
+    sourceSets*.java.srcDirs*.each { it.mkdirs() }
+    sourceSets*.resources.srcDirs*.each { it.mkdirs()}
+}
+
+task createWebProject(dependsOn: 'createJavaProject') << {
+    def webAppDir = file("D:\\tools\\ideaWorkSpace\\springmvc")
+    webAppDir.mkdirs()
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.1'
+}
