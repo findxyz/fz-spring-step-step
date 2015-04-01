@@ -50,7 +50,7 @@
           p:name="fz"
           p:spouse-ref="lf"
           scope="prototype"
-            />
+     />
 
     <bean id="lf" class="com.foo.People">
         <property name="name" value="lf"/>
