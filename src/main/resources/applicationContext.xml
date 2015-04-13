@@ -14,5 +14,5 @@
     <import resource="classpath:fooApplicationContext.xml"></import>
     <import resource="classpath:barApplicationContext.xml"></import>
     <bean class="com.foo.MyBeanPostProcessor"/>
-
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean"/>
 </beans>
