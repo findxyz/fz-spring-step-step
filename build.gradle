@@ -18,7 +18,9 @@ dependencies {
             "com.fasterxml.jackson.core:jackson-core:2.5.1",
             "com.fasterxml.jackson.core:jackson-databind:2.5.1",
             "com.fasterxml.jackson.core:jackson-annotations:2.5.1",
-            "org.springframework:spring-webmvc:4.1.5.RELEASE"
+            "org.springframework:spring-webmvc:4.1.5.RELEASE",
+            "org.aspectj:aspectjrt:1.7.3",
+            "org.aspectj:aspectjweaver:1.7.3"
     )
 }
 
