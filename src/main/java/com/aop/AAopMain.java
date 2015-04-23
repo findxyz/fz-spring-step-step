@@ -14,5 +14,18 @@ public class AAopMain {
         myService.doService();
         System.out.println("#################");
         myService.doService("abc");
+
+        System.out.println("################# MyAopObjectProxy");
+        MyAopObject myAopObject = context.getBean("myAopObjectProxy", MyAopObject.class);
+        myAopObject.doIt();
+
+        System.out.println("################# Human");
+        Human chinese = context.getBean("chinese", Human.class);
+        chinese.getLanguage();
+
+        System.out.println("################# HumanProxy");
+        Human chineseProxy = context.getBean("chineseProxy", Human.class);
+        chineseProxy.getLanguage();
+
     }
 }
