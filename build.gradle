@@ -22,7 +22,10 @@ dependencies {
             "com.fasterxml.jackson.core:jackson-databind:2.5.1",
             "com.fasterxml.jackson.core:jackson-annotations:2.5.1",
             "org.springframework:spring-webmvc:4.1.5.RELEASE",
-            "org.springframework:spring-aspects:4.1.5.RELEASE"
+            "org.springframework:spring-aspects:4.1.5.RELEASE",
+            "commons-dbcp:commons-dbcp:1.4",
+            "org.springframework:spring-jdbc:4.1.5.RELEASE",
+            "mysql:mysql-connector-java:5.1.35"
     )
 }
 
