@@ -17,4 +17,12 @@ public class PostService {
     public void save(Post post){
         postDao.save(post);
     }
+
+    public void saveBySimple(Post post){
+        postDao.saveBySimple(post);
+    }
+
+    public Post queryPostByProcedure(int id){
+        return postDao.queryPostByProcedure(id);
+    }
 }
