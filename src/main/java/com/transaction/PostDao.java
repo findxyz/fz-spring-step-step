@@ -2,14 +2,17 @@ package com.transaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.*;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,11 +38,14 @@ public class PostDao{
 
     private SimpleJdbcCall simpleJdbcCall;
 
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
     @Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("t_posts");
         this.simpleJdbcCall = new SimpleJdbcCall(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     public void save(Post post){
@@ -68,5 +74,50 @@ public class PostDao{
         post.setTitle(out.get("out_title").toString());
         post.setContent(out.get("out_content").toString());
         return post;
+    }
+
+    public List<Post> queryAllPosts(){
+        return this.jdbcTemplate.query("select id, title, content from t_posts", new PostMapper());
+    }
+
+    private static final class PostMapper implements RowMapper<Post>{
+
+        @Override
+        public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Post post = new Post();
+            post.setId(Integer.parseInt(rs.getString("id")));
+            post.setTitle(rs.getString("title"));
+            post.setContent(rs.getString("content"));
+            return post;
+        }
+    }
+
+    public int queryTitleLikeCount(String titleLike){
+
+        String sql = "select count(0) from t_posts where title like concat('%', :titleLike, '%')";
+        // MapSqlParameterSource or Map
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource().addValue("titleLike", titleLike);
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("titleLike", titleLike);
+        return this.namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+    }
+
+    public int queryCountByBeanParameter(Post post){
+        String sql = "select count(0) from t_posts where title like concat('%', :title, '%') and content like concat('%', :content, '%')";
+        SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(post);
+        return this.namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, Integer.class);
+    }
+
+    public int[] batchUpdate(final List<Post> posts){
+        SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(posts.toArray());
+        String sql = "update t_posts set title = :title, content = :content where id = :id";
+        int[] updateCounts = this.namedParameterJdbcTemplate.batchUpdate(sql, batch);
+        return updateCounts;
+    }
+
+    public static void main(String[] args){
+        int arr[][] = {{1,2}, {2,3,4}};
+        System.out.println(arr.length);
+        System.out.println(arr[1].length);
     }
 }

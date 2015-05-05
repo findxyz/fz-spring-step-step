@@ -5,6 +5,12 @@ package com.transaction;
  */
 public class Post {
 
+    public Post(int id, String title, String content){
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+
     public Post(String title, String content){
         this.title = title;
         this.content = content;
