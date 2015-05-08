@@ -2,6 +2,7 @@ package com.transaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.*;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -9,8 +10,10 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +46,7 @@ public class PostDao{
     @Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
-        this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("t_posts");
+        this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("t_posts").usingGeneratedKeyColumns("id");
         this.simpleJdbcCall = new SimpleJdbcCall(dataSource);
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
@@ -57,7 +60,10 @@ public class PostDao{
         Map<String, String> map = new HashMap<String, String>(2);
         map.put("title", post.getTitle());
         map.put("content", post.getContent());
-        this.simpleJdbcInsert.execute(map);
+        // usingGeneratedKeyColumns & executeAndReturnKey & database auto-generate
+        // 通过以上三个条件，就能在插入完成后获取自动生成的id值
+        Number id = this.simpleJdbcInsert.executeAndReturnKey(map);
+        System.out.println(id);
     }
 
     /*
@@ -112,6 +118,23 @@ public class PostDao{
         SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(posts.toArray());
         String sql = "update t_posts set title = :title, content = :content where id = :id";
         int[] updateCounts = this.namedParameterJdbcTemplate.batchUpdate(sql, batch);
+        return updateCounts;
+    }
+
+    public int[][] batchUpdateBySize(final Collection<Post> posts){
+        String sql = "update t_posts set title = ?, content = ? where id = ?";
+        int[][] updateCounts = jdbcTemplate.batchUpdate(
+                sql,
+                posts,
+                2,
+                new ParameterizedPreparedStatementSetter<Post>() {
+                    @Override
+                    public void setValues(PreparedStatement ps, Post argument) throws SQLException {
+                        ps.setString(1, argument.getTitle());
+                        ps.setString(2, argument.getContent());
+                        ps.setLong(3, argument.getId());
+                    }
+                });
         return updateCounts;
     }
 

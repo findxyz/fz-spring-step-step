@@ -51,15 +51,15 @@ public class HtmlDecode {
 
         /*
             js encodeURI || java.net.URLEncoder.encode(s, enc)
-            aaa涓浗 -> aaa%E4%B8%AD%E5%9B%BD
+            aaa中国 -> aaa%E4%B8%AD%E5%9B%BD
         */
         logger.info("===== js encodeURI || java.net.URLEncoder.encode(s, enc) =====");
-        logger.info(java.net.URLEncoder.encode("aaa涓浗", "utf-8"));
+        logger.info(java.net.URLEncoder.encode("aaa中国", "UTF-8"));
         logger.info("===== =====");
 
         /*
             java.net.URLDecoder.decode(s, enc) || js decodeURI
-            aaa%E4%B8%AD%E5%9B%BD -> aaa涓浗
+            aaa%E4%B8%AD%E5%9B%BD -> aaa中国
         */
         logger.info("===== java.net.URLDecoder.decode(s, enc) || js decodeURI =====");
         logger.info(java.net.URLDecoder.decode("aaa%E4%B8%AD%E5%9B%BD", "UTF-8"));
@@ -90,5 +90,7 @@ public class HtmlDecode {
         logger.info(sb.toString());
 
         hexStr4Xml("<script>alert(1)</script>");
+
+        logger.info(String.format("%x", new BigInteger(1, "aaa中国".getBytes("latin1"))).toUpperCase());
     }
 }
