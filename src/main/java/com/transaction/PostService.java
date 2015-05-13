@@ -21,8 +21,9 @@ public class PostService {
         postDao.save(post);
     }
 
-    public void saveBySimple(Post post){
+    public void saveBySimple(Post post) {
         postDao.saveBySimple(post);
+        // throw new RuntimeException("a");
     }
 
     public Post queryPostByProcedure(int id){

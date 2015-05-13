@@ -15,14 +15,14 @@ public class ATransactionMain {
 
     private static final Logger logger = Logger.getLogger(ATransactionMain.class);
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
+    public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"transaction/transactionContext.xml"});
         PostService postService = context.getBean("postService", PostService.class);
 
         Post post = new Post("hello title2", "world content2");
         postService.save(post);
 
-        Post post2 = new Post("Simple insert", "ab\u4E2D\u6587c中文");
+        Post post2 = new Post("Simple insert exception", "ab\u4E2D\u6587c中文");
         postService.saveBySimple(post2);
 
         List<Post> posts = new ArrayList<Post>();
