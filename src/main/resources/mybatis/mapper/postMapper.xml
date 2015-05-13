@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mybatis.mapper.PostMapper">
+
+    <select id="queryPosts" resultType="post">
+        SELECT A.ID,
+        A.TITLE,
+        A.CONTENT
+        FROM T_POSTS A
+        WHERE 1=1
+        <if test="TITLE != null">
+            AND A.TITLE LIKE CONCAT('%', #{TITLE}, '%')
+        </if>
+        <if test="CONTENT != null">
+            AND A.CONTENT LIKE CONCAT('%', #{CONTENT}, '%')
+        </if>
+        ORDER BY A.ID
+    </select>
+
+    <select id="queryPost" resultType="post">
+        SELECT A.ID,
+        A.TITLE,
+        A.CONTENT
+        FROM T_POSTS A
+        WHERE 1=1
+        AND A.ID = #{ID}
+        ORDER BY A.ID
+    </select>
+
+    <insert id="savePost" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO T_POSTS
+        (TITLE,
+        CONTENT)
+        VALUES
+        (#{TITLE},
+        #{CONTENT})
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
+    </insert>
+
+    <update id="updatePost">
+        UPDATE T_POSTS SET
+        TITLE=#{TITLE},
+        CONTENT=#{CONTENT}
+        WHERE ID = #{ID}
+    </update>
+
+    <delete id="deletePost">
+        DELETE FROM T_POSTS WHERE ID=#{ID}
+    </delete>
+
+</mapper>

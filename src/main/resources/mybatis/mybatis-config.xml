@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--
+    <settings>
+
+    </settings>
+    <plugins>
+
+    </plugins>
+    -->
+    <typeAliases>
+        <package name="com.mybatis.model"/>
+    </typeAliases>
+    <mappers>
+        <!-- Using classpath relative resources
+        <mappers>
+            <mapper resource="org/mybatis/builder/AuthorMapper.xml"/>
+            <mapper resource="org/mybatis/builder/BlogMapper.xml"/>
+            <mapper resource="org/mybatis/builder/PostMapper.xml"/>
+        </mappers>
+        -->
+        <!-- Using url fully qualified paths
+        <mappers>
+            <mapper url="file:///var/mappers/AuthorMapper.xml"/>
+            <mapper url="file:///var/mappers/BlogMapper.xml"/>
+            <mapper url="file:///var/mappers/PostMapper.xml"/>
+        </mappers>
+        -->
+        <!-- Using mapper interface classes
+        <mappers>
+            <mapper class="org.mybatis.builder.AuthorMapper"/>
+            <mapper class="org.mybatis.builder.BlogMapper"/>
+            <mapper class="org.mybatis.builder.PostMapper"/>
+        </mappers>
+        -->
+        <!-- Register all interfaces in a package as mappers
+        <mappers>
+            <package name="org.mybatis.builder"/>
+        </mappers>
+        -->
+    </mappers>
+</configuration>
