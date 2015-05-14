@@ -1,5 +1,6 @@
 package com.mybatis.service;
 
+import com.mybatis.dao.PostDao;
 import com.mybatis.mapper.PostMapper;
 import com.mybatis.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +19,52 @@ public class PostService {
     @Autowired
     private PostMapper<Post, Map> postMapper;
 
-    public List<Post> queryPosts(Map params){
+    @Autowired
+    private PostDao postDao;
+
+    public List<Post> queryPostsByMapper(Map params){
         return postMapper.queryPosts(params);
     }
 
-    public Post queryPost(Map params){
+    public Post queryPostByMapper(Map params){
         return postMapper.queryPost(params);
     }
 
     @Transactional
-    public Long savePost(Map params){
+    public Long savePostByMapper(Map params){
         return postMapper.savePost(params);
     }
 
     @Transactional
-    public Long updatePost(Map params){
+    public Long updatePostByMapper(Map params){
         return postMapper.updatePost(params);
     }
 
     @Transactional
-    public Long deletePost(Map params){
+    public Long deletePostByMapper(Map params){
         return postMapper.deletePost(params);
+    }
+
+    public List<Post> queryPostsByDao(Map params){
+        return postDao.queryPosts(params);
+    }
+
+    public Post queryPostByDao(Map params){
+        return postDao.queryPost(params);
+    }
+
+    @Transactional
+    public int savePostByDao(Map params){
+        return postDao.savePost(params);
+    }
+
+    @Transactional
+    public int updatePostByDao(Map params){
+        return postDao.updatePost(params);
+    }
+
+    @Transactional
+    public int deletePostByDao(Map params){
+        return postDao.deletePost(params);
     }
 }

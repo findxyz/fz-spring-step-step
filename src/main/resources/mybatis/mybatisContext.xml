@@ -28,6 +28,10 @@
         <property name="mapperLocations" value="classpath:mybatis/mapper/**/*.xml" />
     </bean>
 
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+
     <mybatis:scan base-package="com.mybatis.mapper" annotation="com.mybatis.annotations.RepoMapper" />
 
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
