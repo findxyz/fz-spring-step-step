@@ -2,7 +2,6 @@ package com.mybatis;
 
 import com.mybatis.model.Post;
 import com.mybatis.service.PostService;
-import javafx.geometry.Pos;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
