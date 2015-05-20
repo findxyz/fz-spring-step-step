@@ -91,7 +91,7 @@ public class PetController {
     @RequestMapping(value="/dogs/species/muyangquan", method=RequestMethod.POST, params={"species=muyangquan", "b", "a"})
     @ResponseBody
     public String findMuyangquan(@RequestParam(value="species") String species, @RequestParam Map params){
-        return species + params; // zangao{species=zangao, b=2, a=1}
+        return species + params; // muyangquan{species=muyangquan, b=2, a=1}
     }
 
 }
