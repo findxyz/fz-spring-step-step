@@ -6,6 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -92,6 +95,28 @@ public class PetController {
     @ResponseBody
     public String findMuyangquan(@RequestParam(value="species") String species, @RequestParam Map params){
         return species + params; // muyangquan{species=muyangquan, b=2, a=1}
+    }
+
+    @RequestMapping(value = "/tomcat", method = RequestMethod.PUT)
+    public void handle(@RequestBody String body, Writer writer) throws IOException {
+        writer.write(body);
+    }
+
+    @RequestMapping(value = "/tomdog", method = RequestMethod.GET)
+    @ResponseBody
+    public Map helloWorld() {
+        Map message = new HashMap();
+        message.put("HelloWorld", "中国");
+        return message;
+    }
+
+    @RequestMapping(value = "/tomerror")
+    @ResponseBody
+    public Map tomerror() {
+        int i = 1/0;
+        Map message = new HashMap();
+        message.put("HelloWorld", "中国");
+        return message;
     }
 
 }
