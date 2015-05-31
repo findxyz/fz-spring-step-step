@@ -1,4 +1,4 @@
-package com.springmvc.aop;
+package com.springmvc.advice;
 
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,9 +14,9 @@ import java.util.Map;
  * Created by fz on 2015-5-29.
  */
 @ControllerAdvice
-public class MyControllerAdvice {
+public class ExceptionAdvice {
 
-    private static final Logger logger = Logger.getLogger(MyControllerAdvice.class);
+    private static final Logger logger = Logger.getLogger(ExceptionAdvice.class);
 
     @ResponseBody
     @ExceptionHandler(Exception.class)

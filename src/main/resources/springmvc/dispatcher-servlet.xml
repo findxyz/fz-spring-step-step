@@ -17,9 +17,15 @@
 
     <context:component-scan base-package="com.springmvc.web"/>
     <!-- 开启matrix variables e.g. http://www.a.com/b/21;q=1;s=2 -->
-    <mvc:annotation-driven enable-matrix-variables="true" />
+    <mvc:annotation-driven enable-matrix-variables="true">
+        <mvc:async-support default-timeout="30000" />
+    </mvc:annotation-driven>
     <mvc:default-servlet-handler />
     <mvc:resources mapping="/css/**" location="/css/" />
     <mvc:resources mapping="/images/**" location="/images/" />
     <mvc:resources mapping="/js/**" location="/js/" />
+
+    <bean id="multipartResolver" class="com.springmvc.utils.MyMultipartResolver">
+        <property name="maxUploadSize" value="1000000000"/>
+    </bean>
 </beans>
