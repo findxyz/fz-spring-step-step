@@ -20,6 +20,13 @@
     <mvc:annotation-driven enable-matrix-variables="true">
         <mvc:async-support default-timeout="30000" />
     </mvc:annotation-driven>
+    <mvc:interceptors>
+        <bean class="com.springmvc.interceptor.MyInterceptor"/>
+        <bean class="com.springmvc.interceptor.MyInterceptor2">
+            <property name="openingTime" value="9" />
+            <property name="closingTime" value="18" />
+        </bean>
+    </mvc:interceptors>
     <mvc:default-servlet-handler />
     <mvc:resources mapping="/css/**" location="/css/" />
     <mvc:resources mapping="/images/**" location="/images/" />
@@ -28,4 +35,17 @@
     <bean id="multipartResolver" class="com.springmvc.utils.MyMultipartResolver">
         <property name="maxUploadSize" value="1000000000"/>
     </bean>
+
+    <!-- override by mvc:annotation-driven so need to use mvc:interceptors instead
+    <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <bean class="com.springmvc.interceptor.MyInterceptor">
+                    <property name="openingTime" value="9" />
+                    <property name="closingTime" value="18" />
+                </bean>
+            </list>
+        </property>
+    </bean>
+    -->
 </beans>
