@@ -30,24 +30,35 @@
     <script type="text/javascript">
         $(document).ready(function(){
             function getPercentAjax(){
-                $.ajax({
-                    url: '/pets/tomuploadProgress',
-                    success: function(data){
-                        if(!data.doneFlag){
-                            $("#progress").show();
-                            $("#progressBar").width(data.percentDone+"%").html(data.percentDone+"%");
-                            setTimeout(getPercentAjax, 500);
+                try{
+                    $.ajax({
+                        url: '/pets/tomupload/progress',
+                        dataType: 'jsonp',
+                        success: function(data){
+                            if(!data.doneFlag){
+                                $("#progress").show();
+                                $("#progressBar").width(data.percentDone+"%").html(data.percentDone+"%");
+                                setTimeout(getPercentAjax, 500);
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                            console.log(jqXHR);
+                            console.log(textStatus);
+                            console.log(errorThrown);
                         }
-                    }
-                });
+                    });
+                }catch(err){
+                    console.log(err);
+                }
+
             }
-            $("#callableForm2").submit(function(){
-                getPercentAjax();
-            });
-            $("#uploadBtn2").click(function(){
+
+            $("#uploadBtn2").click(function(event){
+                event.preventDefault();
                 var timestamp = new Date().getTime();
                 $("#upload_key").val(timestamp);
                 $("#callableForm2").submit();
+                getPercentAjax();
             });
         });
     </script>

@@ -4,7 +4,6 @@ import com.springmvc.model.Dog;
 import com.springmvc.utils.Const;
 import com.springmvc.utils.MyProgressListener;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -12,12 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.util.UriComponents;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
-import java.security.Timestamp;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -31,6 +32,22 @@ import java.util.concurrent.Callable;
 public class PetController {
 
     private static final Logger logger = Logger.getLogger(PetController.class);
+
+    /*
+    * http://localhost:8080/pets/testDogs/1
+    * */
+    @RequestMapping(value="/testDogs/{dogId}", method=RequestMethod.GET)
+    @ResponseBody
+    public String findDog(@PathVariable String dogId) {
+        UriComponents uriComponents = MvcUriComponentsBuilder
+                .fromMethodName(PetController.class, "findDog", "21").buildAndExpand();
+        URI uri = uriComponents.encode().toUri();
+
+        logger.info(uri);
+        String result = "<h1 style='color: red;'>" + dogId + "</h1>";
+        System.out.println(result); // <h1 style='color: red;'>1</h1>
+        return result;
+    }
 
     /*
     * http://localhost:8080/pets/dogs/1;species=hashiqi
@@ -239,7 +256,7 @@ public class PetController {
         };
     }
 
-    @RequestMapping(value="/tomuploadProgress")
+    @RequestMapping(value="/tomupload/progress")
     @ResponseBody
     public Map getUploadProgress(HttpServletRequest request){
         Map result = new HashMap();
@@ -252,6 +269,11 @@ public class PetController {
             result.put("doneFlag", true);
         }
         return result;
+    }
+
+    @RequestMapping("/upload")
+    public String uploadJsp(){
+        return "upload/CallableUpload";
     }
 
 }
