@@ -23,8 +23,8 @@
     <mvc:interceptors>
         <bean class="com.springmvc.interceptor.MyInterceptor"/>
         <bean class="com.springmvc.interceptor.MyInterceptor2">
-            <property name="openingTime" value="9" />
-            <property name="closingTime" value="18" />
+            <property name="openingTime" value="8" />
+            <property name="closingTime" value="24" />
         </bean>
     </mvc:interceptors>
     <!--
