@@ -1,4 +1,7 @@
-package com.ws.client;
+package com.ws.clientByServlet;
+
+import com.ws.clientByServlet.HelloJAXWS;
+import com.ws.clientByServlet.HelloJAXWSImplService;
 
 /**
  * Created by Administrator on 2015/7/10.

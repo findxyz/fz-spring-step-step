@@ -13,6 +13,7 @@ public class HelloJAXWSImpl implements HelloJAXWS {
     @Override
     @WebMethod
     public String sayHello() {
+        System.out.println("See see server...");
         return "Hello, JAX-WS";
     }
 

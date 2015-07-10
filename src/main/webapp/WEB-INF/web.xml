@@ -13,6 +13,11 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    <listener>
+        <listener-class>
+            com.sun.xml.ws.transport.http.servlet.WSServletContextListener
+        </listener-class>
+    </listener>
 
     <!-- Character Encoding filter -->
     <filter>
@@ -47,6 +52,17 @@
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MyFisrtWs</servlet-name>
+        <servlet-class>
+            com.sun.xml.ws.transport.http.servlet.WSServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MyFisrtWs</servlet-name>
+        <url-pattern>/service/helloJAXWS</url-pattern>
     </servlet-mapping>
 
     <error-page>
