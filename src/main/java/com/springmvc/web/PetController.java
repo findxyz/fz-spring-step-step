@@ -273,7 +273,7 @@ public class PetController {
 
     @RequestMapping("/upload")
     public String uploadJsp(){
-        return "upload/CallableUpload";
+        return "jsp/upload/CallableUpload";
     }
 
 }
