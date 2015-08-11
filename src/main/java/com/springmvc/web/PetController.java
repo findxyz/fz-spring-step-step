@@ -78,10 +78,11 @@ public class PetController {
             }
         });
     */
-    @RequestMapping(value="/dogs/species/*", method=RequestMethod.POST, consumes="application/json; charset=UTF-8")
+    @RequestMapping(value="/dogs/species/{dogId}", method=RequestMethod.POST, consumes="application/json; charset=UTF-8")
     @ResponseBody
     public Dog findDog(/* @RequestBody String dogJson */
-                        @RequestBody Dog dog, @RequestParam Map params){
+                        @RequestBody Dog dog, @RequestParam Map params, @PathVariable String dogId){
+        System.out.println(dogId);
         System.out.println(dog.getId() + "," + dog.getName() + "," + dog.getSpecies());
         System.out.println(params);
         return dog;
