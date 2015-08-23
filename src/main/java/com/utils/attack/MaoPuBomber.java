@@ -1,6 +1,7 @@
 package com.utils.attack;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -51,12 +52,17 @@ public class MaoPuBomber implements MessageBomber{
         HttpEntity entity = httpResponse.getEntity();
 
         String result = null;
-        if (entity != null){
-            result = EntityUtils.toString(entity, "utf-8");
-        }
 
-        EntityUtils.consume(entity);
+        if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+
+            if (entity != null){
+                result = EntityUtils.toString(entity, "utf-8");
+            }
+
+            EntityUtils.consume(entity);
+        }
         httpResponse.close();
+
         return result;
     }
 
