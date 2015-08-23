@@ -17,49 +17,42 @@ import java.util.List;
 /**
  * Created by fz on 2015/8/23.
  */
-public class RuiLiBomber implements MessageBomber{
+public class ZhongHuaYingCaiBomber implements MessageBomber{
 
     public String name;
 
-    public RuiLiBomber(String name){
+    public ZhongHuaYingCaiBomber(String name){
         this.name = name;
     }
 
     @Override
     public String emissionMissile(CloseableHttpClient httpClient, String fuckNo) throws Exception {
 
-        HttpPost httpPost = new HttpPost("http://user.rayli.com.cn/forum.php?mod=ajax&infloat=register&handlekey=register&action=dsmscode&fbry=21658YemE7255Xjsy33652&ajaxmenu=1&stype=register&mobile="+fuckNo+"&inajax=1&ajaxtarget=smscode_tip");
+        HttpPost httpPost = new HttpPost("http://www.chinahr.com/modules/jsperson/reg.php?action=phoneCaptch");
 
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-        pairs.add(new BasicNameValuePair("mod", "ajax"));
-        pairs.add(new BasicNameValuePair("infloat", "register"));
-        pairs.add(new BasicNameValuePair("handlekey", "register"));
-        pairs.add(new BasicNameValuePair("action", "dsmscode"));
-        pairs.add(new BasicNameValuePair("fbry", "21658YemE7255Xjsy33652"));
-        pairs.add(new BasicNameValuePair("ajaxmenu", "1"));
-        pairs.add(new BasicNameValuePair("stype", "register"));
         pairs.add(new BasicNameValuePair("mobile", fuckNo));
-        pairs.add(new BasicNameValuePair("inajax", "1"));
-        pairs.add(new BasicNameValuePair("ajaxtarget", "smscode_tip"));
 
         UrlEncodedFormEntity uefEntity = new UrlEncodedFormEntity(pairs, "utf-8");
 
-        httpPost.setHeader(new BasicHeader("Accept", "*/*"));
-        httpPost.setHeader(new BasicHeader("Accept-Encoding", "gzip, deflate, sdch"));
+        httpPost.setHeader(new BasicHeader("Accept", "text/plain, */*; q=0.01"));
+        httpPost.setHeader(new BasicHeader("Accept-Encoding", "gzip, deflate"));
         httpPost.setHeader(new BasicHeader("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4,zh-TW;q=0.2"));
-        httpPost.setHeader(new BasicHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"));
+        httpPost.setHeader(new BasicHeader("Content-Type", "application/x-www-form-urlencoded"));
         httpPost.setHeader(new BasicHeader("DNT", "1"));
-        httpPost.setHeader(new BasicHeader("Host", "user.rayli.com.cn"));
-        httpPost.setHeader(new BasicHeader("Referer", "http://user.rayli.com.cn/member-register.html"));
+        httpPost.setHeader(new BasicHeader("Host", "www.chinahr.com"));
+        httpPost.setHeader(new BasicHeader("Origin", "http://www.chinahr.com"));
+        httpPost.setHeader(new BasicHeader("Referer", "http://www.chinahr.com/"));
         httpPost.setHeader(new BasicHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36"));
         httpPost.setHeader(new BasicHeader("X-Requested-With", "XMLHttpRequest"));
+        httpPost.setHeader(new BasicHeader("Cookie", "_ga=GA1.2.455789517.1440341284; _gat=1; ipgoto_fixurl=http%3A//www.chinahr.com/; currentCityId=; __utmt=1; __utma=162484963.455789517.1440341284.1440341284.1440341284.1; __utmb=162484963.1.10.1440341284; __utmc=162484963; __utmz=162484963.1440341284.1.1.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; PHPSESSID=e1i9m60b3ur4b08mbkdfp3ga02; regPhoneCode=64cd34f157592c400675246c1f934f5f"));
 
         httpPost.setEntity(uefEntity);
-        CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
 
-        HttpEntity entity = httpResponse.getEntity();
+        CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
         String result = null;
-        try {
+        try{
+            HttpEntity entity = httpResponse.getEntity();
             if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                 if (entity != null){
                     result = EntityUtils.toString(entity, "utf-8");

@@ -49,20 +49,20 @@ public class MaoPuBomber implements MessageBomber{
         httpPost.setEntity(uefEntity);
 
         CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
-        HttpEntity entity = httpResponse.getEntity();
-
         String result = null;
-
-        if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-
-            if (entity != null){
-                result = EntityUtils.toString(entity, "utf-8");
+        try{
+            HttpEntity entity = httpResponse.getEntity();
+            if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                if (entity != null){
+                    result = EntityUtils.toString(entity, "utf-8");
+                }
+                EntityUtils.consume(entity);
             }
-
-            EntityUtils.consume(entity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            httpResponse.close();
         }
-        httpResponse.close();
-
         return result;
     }
 

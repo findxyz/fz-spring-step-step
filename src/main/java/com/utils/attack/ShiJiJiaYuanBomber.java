@@ -55,17 +55,18 @@ public class ShiJiJiaYuanBomber implements MessageBomber{
         HttpEntity entity = httpResponse.getEntity();
 
         String result = null;
-
-        if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-
-            if (entity != null){
-                result = EntityUtils.toString(entity, "utf-8");
+        try{
+            if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                if (entity != null){
+                    result = EntityUtils.toString(entity, "utf-8");
+                }
+                EntityUtils.consume(entity);
             }
-
-            EntityUtils.consume(entity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            httpResponse.close();
         }
-
-        httpResponse.close();
         return result;
     }
 
