@@ -6,13 +6,12 @@ import org.springframework.stereotype.Service;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 
 /**
  * Created by fz on 2015/7/10.
  */
 @Service
-@WebService(serviceName = "helloJaxWs", portName = "helloJaxWsPort", endpointInterface = "com.springmvc.ws.server.HelloJAXWS")
+@WebService(serviceName = "springHelloJaxWs", portName = "helloJaxWsPort", endpointInterface = "com.springmvc.ws.server.HelloJAXWS")
 public class HelloJAXWSImpl implements HelloJAXWS {
 
     @Autowired
