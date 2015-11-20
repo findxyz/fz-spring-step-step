@@ -22,6 +22,6 @@ public class HelloServerMain {
 
     public static void main(String[] args){
 
-        Endpoint.publish("http://localhost:8080/service/helloJAXWS", new HelloJAXWSImpl());
+        Endpoint.publish("http://localhost:8080/service/helloJaxWs?wsdl", new HelloJAXWSImpl());
     }
 }

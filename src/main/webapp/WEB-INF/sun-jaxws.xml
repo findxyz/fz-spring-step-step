@@ -5,4 +5,8 @@
     <endpoint name="helloJAXWS"
               implementation="com.ws.server.HelloJAXWSImpl"
               url-pattern="/service/helloJAXWS"/>
+
+    <endpoint name="helloSpringJAXWS"
+              implementation="com.springmvc.ws.server.HelloJAXWSImpl"
+              url-pattern="/service/springHelloJAXWS"/>
 </endpoints>

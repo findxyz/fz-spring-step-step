@@ -65,6 +65,17 @@
         <url-pattern>/service/helloJAXWS</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>springJaxWs</servlet-name>
+        <servlet-class>
+            com.sun.xml.ws.transport.http.servlet.WSServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springJaxWs</servlet-name>
+        <url-pattern>/service/springHelloJAXWS</url-pattern>
+    </servlet-mapping>
+
     <error-page>
         <error-code>404</error-code>
         <location>/errors/404.html</location>
