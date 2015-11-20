@@ -39,7 +39,10 @@ dependencies {
             "com.sun.xml.ws:jaxws-rt:2.2.10",
             "org.tmatesoft.svnkit:svnkit:1.8.10",
             "org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE",
-            "org.apache.httpcomponents:httpclient:4.5"
+            "org.apache.httpcomponents:httpclient:4.5",
+            compile ("org.jvnet.jax-ws-commons.spring:jaxws-spring:1.9") {
+                exclude group: "org.springframework"
+            }
     )
 }
 

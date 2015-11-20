@@ -1,18 +1,28 @@
 package com.springmvc.ws.server;
 
+import com.springmvc.service.FooService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import javax.jws.soap.SOAPBinding;
+
 /**
  * Created by fz on 2015/7/10.
  */
-@WebService(endpointInterface = "com.springmvc.ws.server.HelloJAXWS")
-public class HelloJAXWSImpl extends SpringBeanAutowiringSupport implements HelloJAXWS {
+@Service
+@WebService(serviceName = "helloJaxWs", portName = "helloJaxWsPort", endpointInterface = "com.springmvc.ws.server.HelloJAXWS")
+public class HelloJAXWSImpl implements HelloJAXWS {
+
+    @Autowired
+    private FooService fooService;
 
     @Override
     @WebMethod
     public String sayHello() {
         System.out.println("See see springmvc server...");
+        fooService.sayHello();
         return "Hello, JAX-WS";
     }
 

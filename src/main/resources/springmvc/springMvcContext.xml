@@ -5,16 +5,27 @@
        xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:ws="http://jax-ws.dev.java.net/spring/core"
+       xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
        xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-       http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+            http://jax-ws.dev.java.net/spring/core http://jax-ws.java.net/spring/core.xsd
+            http://jax-ws.dev.java.net/spring/servlet http://jax-ws.java.net/spring/servlet.xsd
        ">
 
     <context:component-scan base-package="com.springmvc">
-        <context:exclude-filter type="regex" expression="com\.springmvc\.web\..*"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
     </context:component-scan>
+
+    <wss:binding url="/service/springHelloJAXWS">
+        <wss:service>
+            <ws:service bean="#helloJAXWSImpl"/>
+        </wss:service>
+    </wss:binding>
 
 </beans>

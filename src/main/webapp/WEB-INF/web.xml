@@ -55,24 +55,22 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>MyFisrtWs</servlet-name>
+        <servlet-name>MyFirstWs</servlet-name>
         <servlet-class>
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>MyFisrtWs</servlet-name>
+        <servlet-name>MyFirstWs</servlet-name>
         <url-pattern>/service/helloJAXWS</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>springJaxWs</servlet-name>
-        <servlet-class>
-            com.sun.xml.ws.transport.http.servlet.WSServlet
-        </servlet-class>
+        <servlet-name>spring-jax-ws-servlet</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSSpringServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>springJaxWs</servlet-name>
+        <servlet-name>spring-jax-ws-servlet</servlet-name>
         <url-pattern>/service/springHelloJAXWS</url-pattern>
     </servlet-mapping>
 
