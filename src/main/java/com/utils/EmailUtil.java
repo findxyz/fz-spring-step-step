@@ -7,7 +7,7 @@ public class EmailUtil {
 
     private static final String userCount = "djangomail@126.com";
 
-    private static final String password = "djangomail~!@";
+    private static final String passWord = "djangomail~!@";
 
     private static final String hostName = "smtp.126.com";
 
@@ -16,8 +16,7 @@ public class EmailUtil {
 
         HtmlEmail email = new HtmlEmail();
         email.setHostName(hostName);
-        email.setTLS(false);
-        email.setAuthentication(userCount, password);
+        email.setAuthentication(userCount, passWord);
         try {
             email.setCharset("UTF-8");
             email.setFrom(userCount, sender);
