@@ -1,12 +1,15 @@
 package com.springmvc.web;
 
 import com.springmvc.model.Dog;
+import com.springmvc.service.FooService;
 import com.springmvc.utils.Const;
 import com.springmvc.utils.MyProgressListener;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -31,6 +34,9 @@ import java.util.concurrent.Callable;
 @Scope(WebApplicationContext.SCOPE_REQUEST)
 public class PetController {
 
+    @Autowired
+    private FooService fooService;
+
     private static final Logger logger = Logger.getLogger(PetController.class);
 
     /*
@@ -42,6 +48,8 @@ public class PetController {
         UriComponents uriComponents = MvcUriComponentsBuilder
                 .fromMethodName(PetController.class, "findDog", "21").buildAndExpand();
         URI uri = uriComponents.encode().toUri();
+
+        fooService.sayHello();
 
         logger.info(uri);
         String result = "<h1 style='color: red;'>" + dogId + "</h1>";
@@ -109,13 +117,13 @@ public class PetController {
     /*
         contentType
             1.application/json; charset=UTF-8
-                ÇëÇó²ÎÊıÊÇjson×Ö·û´®{a=1, b=2}£¬Ôò@RequestBody¿ÉÒÔÍ¨¹ıspring mvcµÄconvert×ª»»³ÉÏàÓ¦µÄ¶ÔÏó»òÕßMap£¬@RequestParam¼°HttpServletRequestÎŞ·¨»ñÈ¡²ÎÊı
-                ÇëÇó²ÎÊıÊÇ²ÎÊı´®a=1&b=2£¬Ôò»áÎŞ·¨Í¨¹ıconvert×ª»»Îª¶ÔÏó»òMapµ¼ÖÂ×ª»»³ö´í£¬Í¬ÑùµÄ@RequestParam¼°HttpServletRequestÎŞ·¨»ñÈ¡²ÎÊı
+                è¯·æ±‚å‚æ•°æ˜¯jsonå­—ç¬¦ä¸²{a=1, b=2}ï¼Œåˆ™@RequestBodyå¯ä»¥é€šè¿‡spring mvcçš„convertè½¬æ¢æˆç›¸åº”çš„å¯¹è±¡æˆ–è€…Mapï¼Œ@RequestParamåŠHttpServletRequestæ— æ³•è·å–å‚æ•°
+                è¯·æ±‚å‚æ•°æ˜¯å‚æ•°ä¸²a=1&b=2ï¼Œåˆ™ä¼šæ— æ³•é€šè¿‡convertè½¬æ¢ä¸ºå¯¹è±¡æˆ–Mapå¯¼è‡´è½¬æ¢å‡ºé”™ï¼ŒåŒæ ·çš„@RequestParamåŠHttpServletRequestæ— æ³•è·å–å‚æ•°
             2.application/x-www-form-urlencoded;charset=UTF-8
-                ÇëÇó²ÎÊıÊÇ²ÎÊı´®a=1&b=2£¬Ôò@RequestBody»áÒò²»Ö§³Ö×ª»»Îª¶ÔÏó»òMap¶ø³ö´í£¬µ«@RequestParamºÍHttpServletRequest¿ÉÒÔÕıÈ·»ñÈ¡µ½´«µİÀ´µÄ²ÎÊı
-            ×¢£º1£¬2ÖĞÈç¹û@RequestBodyµÄÀàĞÍÊÇStringÔò¿ÉÒÔ³É¹¦×ª»»²»»á³ö´í£¬µ«Òò×Ö·û´®ÊÇÃ»ÓĞ½øĞĞ½âÎö¹ıµÄ×Ö·û´®£¬²»·½±ãÊ¹ÓÃ£¬ËùÒÔÕâÖÖÊ¹ÓÃ·½·¨ÒâÒå²»´ó
+                è¯·æ±‚å‚æ•°æ˜¯å‚æ•°ä¸²a=1&b=2ï¼Œåˆ™@RequestBodyä¼šå› ä¸æ”¯æŒè½¬æ¢ä¸ºå¯¹è±¡æˆ–Mapè€Œå‡ºé”™ï¼Œä½†@RequestParamå’ŒHttpServletRequestå¯ä»¥æ­£ç¡®è·å–åˆ°ä¼ é€’æ¥çš„å‚æ•°
+            æ³¨ï¼š1ï¼Œ2ä¸­å¦‚æœ@RequestBodyçš„ç±»å‹æ˜¯Stringåˆ™å¯ä»¥æˆåŠŸè½¬æ¢ä¸ä¼šå‡ºé”™ï¼Œä½†å› å­—ç¬¦ä¸²æ˜¯æ²¡æœ‰è¿›è¡Œè§£æè¿‡çš„å­—ç¬¦ä¸²ï¼Œä¸æ–¹ä¾¿ä½¿ç”¨ï¼Œæ‰€ä»¥è¿™ç§ä½¿ç”¨æ–¹æ³•æ„ä¹‰ä¸å¤§
             3.multipart/form-data
-                ÇëÇó²ÎÊıÊÇ²ÎÊı´®a=1&b=2£¬»áÒòÎª²ÎÊıÃ»ÓĞÎÄ¼şÀàĞÍ¶øÔâµ½¾Ü¾ø
+                è¯·æ±‚å‚æ•°æ˜¯å‚æ•°ä¸²a=1&b=2ï¼Œä¼šå› ä¸ºå‚æ•°æ²¡æœ‰æ–‡ä»¶ç±»å‹è€Œé­åˆ°æ‹’ç»
     */
     @RequestMapping(value="/dogs4/species/*", method=RequestMethod.POST)
     @ResponseBody
@@ -175,7 +183,7 @@ public class PetController {
     @ResponseBody
     public Map helloWorld() {
         Map message = new HashMap();
-        message.put("HelloWorld", "ÖĞ¹ú");
+        message.put("HelloWorld", "ä¸­å›½");
         return message;
     }
 
@@ -184,7 +192,7 @@ public class PetController {
     public Map tomerror() {
         int i = 1/0;
         Map message = new HashMap();
-        message.put("HelloWorld", "ÖĞ¹ú");
+        message.put("HelloWorld", "ä¸­å›½");
         return message;
     }
 
@@ -275,6 +283,12 @@ public class PetController {
     @RequestMapping("/upload")
     public String uploadJsp(){
         return "jsp/upload/CallableUpload";
+    }
+
+    @RequestMapping("/a")
+    public String aJsp(Model model){
+        model.addAttribute("a", "b");
+        return "jsp/a";
     }
 
 }

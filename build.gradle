@@ -41,6 +41,7 @@ dependencies {
             "org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE",
             "org.apache.httpcomponents:httpclient:4.5",
             "org.apache.commons:commons-email:1.4",
+            "com.alibaba:fastjson:1.2.7",
             compile ("org.jvnet.jax-ws-commons.spring:jaxws-spring:1.9") {
                 exclude group: "org.springframework"
             }
