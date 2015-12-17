@@ -6,5 +6,9 @@
 </head>
 <body>
 Hello Thymeleaf <p th:if="${leafId} != null" th:text="${leafId}">abc</p>!
+<p th:text="${leafId}"></p>
+<script style="text/javascript" th:inline="javascript">
+    console.log([[${leafId}]]);
+</script>
 </body>
 </html>
