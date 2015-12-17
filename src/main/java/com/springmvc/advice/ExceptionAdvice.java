@@ -37,7 +37,7 @@ public class ExceptionAdvice {
             }
         }
         Map message = new HashMap();
-        message.put("error", "³ö´íÁË" + e.getMessage());
+        message.put("error", "å‡ºé”™äº†" + e.getMessage());
         message.put("header", request.getParameterMap());
         message.put("body", bw.toString());
         return message;
