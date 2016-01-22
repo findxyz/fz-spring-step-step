@@ -13,7 +13,7 @@ import java.security.SecureRandom;
 /**
  * Created by fz on 2015/11/18.
  */
-public class AESUtil {
+public class AES128Util {
 
     private static final String DEFAULT_CHARSET = "utf-8";
 
@@ -51,7 +51,11 @@ public class AESUtil {
 
     public static SecretKeySpec getAESSecretKey(String base64KeyWord) throws NoSuchAlgorithmException {
         KeyGenerator keyGen = KeyGenerator.getInstance(ALGORITHM);
-        keyGen.init(BITS, new SecureRandom(Base64.decodeBase64(base64KeyWord)));
+        // 防止linux下 随机生成key
+        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+        secureRandom.setSeed(Base64.decodeBase64(base64KeyWord));
+        // 根据密钥初始化密钥生成器
+        keyGen.init(BITS, secureRandom);
         SecretKey secretKey = keyGen.generateKey();
         SecretKeySpec key = new SecretKeySpec(secretKey.getEncoded(), ALGORITHM);
         return key;
@@ -59,7 +63,7 @@ public class AESUtil {
 
     public static void main(String[] args) throws UnsupportedEncodingException {
 
-        String keyWord = "A77yIKiPvvIgqI0DvvIgq77yIQComVUlV44…b4oCYLyc&Ap…k%…@@CB4oCZ77yb77y#oCm4oCmJe@";
+        String keyWord = "today_is_a_sunny_day";
         byte[] base64KeyBytes = Base64.encodeBase64(keyWord.getBytes(DEFAULT_CHARSET));
         String base64KeyWord = new String(base64KeyBytes, DEFAULT_CHARSET);
         String content = "122qw";
