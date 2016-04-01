@@ -46,7 +46,8 @@ dependencies {
                 exclude group: 'org.springframework'
             },
             'com.typesafe.akka:akka-actor_2.11:2.4.2',
-            'net.vidageek:mirror:1.6.1'
+            'net.vidageek:mirror:1.6.1',
+            'com.google.zxing:core:3.2.1'
     )
 }
 
