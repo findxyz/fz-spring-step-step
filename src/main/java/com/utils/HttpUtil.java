@@ -50,7 +50,7 @@ public class HttpUtil {
     public static String httpPost(String url, Map headers, Map params) throws IOException {
 
         HttpPost httpPost = new HttpPost(url);
-        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        List<NameValuePair> pairs = new ArrayList<>();
         for (Object o : params.keySet()) {
             String key = o.toString();
             pairs.add(new BasicNameValuePair(key, params.get(key).toString()));
