@@ -15,7 +15,6 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,28 +25,24 @@ public class HttpUtil {
 
     private static CloseableHttpClient httpClient = HttpClients.createDefault();
 
-    public static String httpGet(String url, Map headers) throws IOException {
+    public static String httpGet(String url, Map headers) {
 
         HttpGet httpGet = new HttpGet(url);
-        Iterator it = headers.keySet().iterator();
-        while(it.hasNext()){
-            String key = it.next().toString();
+        for (Object o : headers.keySet()) {
+            String key = o.toString();
             httpGet.setHeader(new BasicHeader(key, headers.get(key).toString()));
         }
-        CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
         String result = null;
-        try {
-            if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+        try (CloseableHttpResponse httpResponse = httpClient.execute(httpGet)) {
+            if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = httpResponse.getEntity();
-                if (entity != null){
+                if (entity != null) {
                     result = EntityUtils.toString(entity, "utf-8");
                 }
                 EntityUtils.consume(entity);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            httpResponse.close();
         }
         return result;
     }
@@ -56,32 +51,27 @@ public class HttpUtil {
 
         HttpPost httpPost = new HttpPost(url);
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-        Iterator it = params.keySet().iterator();
-        while(it.hasNext()){
-            String key = it.next().toString();
+        for (Object o : params.keySet()) {
+            String key = o.toString();
             pairs.add(new BasicNameValuePair(key, params.get(key).toString()));
         }
         UrlEncodedFormEntity uefEntity = new UrlEncodedFormEntity(pairs, "utf-8");
-        Iterator it2 = headers.keySet().iterator();
-        while(it2.hasNext()){
-            String key = it2.next().toString();
+        for (Object o : headers.keySet()) {
+            String key = o.toString();
             httpPost.setHeader(new BasicHeader(key, headers.get(key).toString()));
         }
         httpPost.setEntity(uefEntity);
-        CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
         String result = null;
-        try{
+        try (CloseableHttpResponse httpResponse = httpClient.execute(httpPost)) {
             HttpEntity entity = httpResponse.getEntity();
-            if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-                if (entity != null){
+            if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                if (entity != null) {
                     result = EntityUtils.toString(entity, "utf-8");
                 }
                 EntityUtils.consume(entity);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            httpResponse.close();
         }
         return result;
     }

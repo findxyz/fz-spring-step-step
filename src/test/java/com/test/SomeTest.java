@@ -24,12 +24,18 @@ public class SomeTest {
         // 私匙加密
         System.out.println(base64PriEncryptData);
         // 公匙解密
+        long begin = System.currentTimeMillis();
         System.out.println(new String(RSAUtil.decryptByPublicKey(Base64.decodeBase64(base64PriEncryptData), pubKey), "utf-8"));
+        long end = System.currentTimeMillis();
+        System.out.println(end - begin);
 
         String base64PubEncryptData = Base64.encodeBase64String(RSAUtil.encryptByPublicKey(originData.getBytes("utf-8"), pubKey));
         // 公匙加密
         System.out.println(base64PubEncryptData);
         // 私匙解密
+        long begin2 = System.currentTimeMillis();
         System.out.println(new String(RSAUtil.decryptByPrivateKey(Base64.decodeBase64(base64PubEncryptData), priKey), "utf-8"));
+        long end2 = System.currentTimeMillis();
+        System.out.println(end2 - begin2);
     }
 }
