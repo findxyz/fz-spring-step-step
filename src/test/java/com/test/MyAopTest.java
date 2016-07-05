@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * ContextConfiguration default loads the same package's same Class name with '-context.xml'
- * In thi Class will load com.test.MyAopTest-context.xml
+ * In this Class will load com.test.MyAopTest-context.xml
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
