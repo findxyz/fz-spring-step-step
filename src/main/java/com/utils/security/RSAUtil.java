@@ -2,8 +2,11 @@ package com.utils.security;
 
 import org.apache.commons.codec.binary.Base64;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -19,7 +22,9 @@ public class RSAUtil {
 
     private static final String SIGNATURE_ALGORITHM = "MD5withRSA";
 
-    private static final int MAX_BLOCK = 128;
+    private static final int MAX_ENCRYPT_BLOCK = 117;
+
+    private static final int MAX_DECRYPT_BLOCK = 128;
 
     private static final int ENCRYPT_MODE = Cipher.ENCRYPT_MODE;
 
@@ -106,7 +111,17 @@ public class RSAUtil {
         return cipher;
     }
 
-    private static byte[] retData(byte[] originData, Cipher cipher) throws Exception {
+    private static byte[] encryptData(byte[] originData, Cipher cipher) throws Exception {
+
+        return cipherData(originData, cipher, MAX_ENCRYPT_BLOCK);
+    }
+
+    private static byte[] decryptData(byte[] originData, Cipher cipher) throws BadPaddingException, IllegalBlockSizeException, IOException {
+
+        return cipherData(originData, cipher, MAX_DECRYPT_BLOCK);
+    }
+
+    private static byte[] cipherData(byte[] originData, Cipher cipher, int maxSize) throws BadPaddingException, IllegalBlockSizeException, IOException {
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         // 对数据分段加解密
@@ -115,42 +130,60 @@ public class RSAUtil {
         int inputLen = originData.length;
         byte[] cache;
         while (inputLen - offSet > 0) {
-            if (inputLen - offSet > MAX_BLOCK) {
-                cache = cipher.doFinal(originData, offSet, MAX_BLOCK);
+            if (inputLen - offSet > maxSize) {
+                cache = cipher.doFinal(originData, offSet, maxSize);
             } else {
                 cache = cipher.doFinal(originData, offSet, inputLen - offSet);
             }
             out.write(cache, 0, cache.length);
             i++;
-            offSet = i * MAX_BLOCK;
+            offSet = i * maxSize;
         }
-        byte[] retData = out.toByteArray();
+        byte[] cipherData = out.toByteArray();
         out.close();
-        return retData;
+        return cipherData;
     }
 
     // 公匙加密
     public static byte[] encryptByPublicKey(byte[] data, String publicKey) throws Exception {
 
-        return retData(data, getPubCipher(publicKey, ENCRYPT_MODE));
+        return encryptData(data, getPubCipher(publicKey, ENCRYPT_MODE));
     }
 
     // 公匙解密数据
     public static byte[] decryptByPublicKey(byte[] data, String publicKey) throws Exception {
 
-        return retData(data, getPubCipher(publicKey, DECRYPT_MODE));
+        return decryptData(data, getPubCipher(publicKey, DECRYPT_MODE));
     }
 
     // 私匙加密
     public static byte[] encryptByPrivateKey(byte[] data, String privateKey) throws Exception {
 
-        return retData(data, getPriCipher(privateKey, ENCRYPT_MODE));
+        return encryptData(data, getPriCipher(privateKey, ENCRYPT_MODE));
     }
 
     // 私匙解密数据
     public static byte[] decryptByPrivateKey(byte[] data, String privateKey) throws Exception {
 
-        return retData(data, getPriCipher(privateKey, DECRYPT_MODE));
+        return decryptData(data, getPriCipher(privateKey, DECRYPT_MODE));
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        RetKeyPair keyPair = generateKeyPair();
+        String priKey = keyPair.getBase64PriKey();
+        String pubKey = keyPair.getBase64PubKey();
+
+        System.out.println(priKey);
+
+        System.out.println(pubKey);
+
+        String content = "汉字。。。。。。abc*&^%%^&^%&%*(((--------===+++";
+        String encBase64Content = Base64.encodeBase64String(encryptByPrivateKey(content.getBytes("utf-8"), priKey));
+        System.out.println(new String(decryptByPublicKey(Base64.decodeBase64(encBase64Content), pubKey), "utf-8"));
+
+        String encBase64Content2 = Base64.encodeBase64String(encryptByPublicKey(content.getBytes("utf-8"), pubKey));
+        System.out.println(new String(decryptByPrivateKey(Base64.decodeBase64(encBase64Content2), priKey), "utf-8"));
     }
 
 }
